@@ -2,7 +2,7 @@
   "name": "reference-code-block",
   "author": "frostime",
   "url": "https://github.com/luqin2007/siyuan-reference-code-block-plugin",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "minAppVersion": "3.0.12",
   "backends": [
     "windows",
