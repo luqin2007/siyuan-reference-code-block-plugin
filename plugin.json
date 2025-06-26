@@ -1,8 +1,8 @@
 {
-  "name": "plugin-sample-vite-svelte",
+  "name": "reference-code-block",
   "author": "frostime",
-  "url": "https://github.com/siyuan-note/plugin-sample-vite-svelte",
-  "version": "0.3.6",
+  "url": "https://github.com/luqin2007/siyuan-reference-code-block-plugin",
+  "version": "1.0.1",
   "minAppVersion": "3.0.12",
   "backends": [
     "windows",
