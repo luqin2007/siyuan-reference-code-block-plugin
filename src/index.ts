@@ -6,13 +6,6 @@ import {
 import { getBlockKramdown, getFile } from "./api";
 import "@/index.scss";
 import { ICodeReference } from "./types";
-import { title } from "process";
-// import { SettingUtils } from "./libs/setting-utils";
-
-// const SETTINGS = "code-reference-settings";
-// const KEY_EMBED_LANG_TYPE = "embed-lang-type";
-
-// const DEFAULT_EMBED_LANG_TYPES = ['js', 'ts', 'css', 'html', 'go', 'python', 'yaml','sql', 'json','md']
 
 export default class PluginSample extends Plugin {
 
@@ -82,7 +75,7 @@ export default class PluginSample extends Plugin {
         viewElement.innerHTML = editElement.innerHTML;
         viewElement.ariaLabel = this.i18nFmt("actionView");
         viewElement.className = 'b3-tooltips__nw b3-tooltips protyle-icon rotyle-action__edit';
-        viewElement.querySelector('use').setAttribute("xlink:href", "#iconView");
+        viewElement.querySelector('use').setAttribute("xlink:href", "#iconPreview");
         viewElement.addEventListener('click', async () => {
             viewElement.parentElement.replaceChild(editElement, viewElement);
             const content = await this.getCodeReferenceContent(id);
@@ -178,14 +171,14 @@ export default class PluginSample extends Plugin {
         const result = this.parseKeyValue(content);
         // 代码路径
         let path: string =
-            result.file || result.link || result.fileLink || // reference
+            result.file || result.link || result.filelink || // reference
             result.path;                                     // embed code
         if (!path)
             throw new Error(this.i18nFmt("errorNoFile"));
         if (path.startsWith("@/")) {                        // reference
             path = path.substring(1);
-        } else if (result.path.startsWith("vault://")) {    // embed code
-            path = result.path.substring(7);
+        } else if (path.startsWith("vault://")) {    // embed code
+            path = path.substring(7);
         } else if (path.startsWith("[")) {                  // reference
             throw new Error(this.i18nFmt("errorUnsupportedWikilinkReferencePath"));
         }
