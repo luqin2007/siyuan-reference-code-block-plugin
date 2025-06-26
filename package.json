@@ -33,6 +33,5 @@
     "vite": "^5.2.9",
     "vite-plugin-static-copy": "^1.0.2",
     "vite-plugin-zip-pack": "^1.0.5"
-  },
-  "packageManager": "pnpm@9.10.0+sha1.216899f511c8dfde183c7cb50b69009c779534a8"
+  }
 }
