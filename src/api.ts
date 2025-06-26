@@ -7,6 +7,7 @@
  */
 
 import { fetchPost, fetchSyncPost, IWebSocketData } from "siyuan";
+import { Block, BlockId, DocumentId, Notebook, NotebookConf, NotebookId, ParentID, PreviousID } from "./types";
 
 
 export async function request(url: string, data: any) {
@@ -153,6 +154,14 @@ export async function upload(assetsDirPath: string, files: any[]): Promise<IResU
     return request(url, form);
 }
 
+export async function getBlockAssetFile(boxId: string, path: string) {
+    const res = await fetch(`/assets/${boxId}/${path}`);
+    if (!res.ok) {
+        throw new Error(`Cannot fetch asset '${path}'. Status: ${res.status}`);
+    }
+    return res.text();
+}
+
 // **************************************** Block ****************************************
 type DataType = "markdown" | "dom";
 export async function insertBlock(
@@ -267,6 +276,19 @@ export async function transferBlockRef(fromID: BlockId, toID: BlockId, refIDs: B
     }
     let url = '/api/block/transferBlockRef';
     return request(url, data);
+}
+
+export async function getBlockInfo(id: BlockId) {
+    let data = {
+        id: id
+    }
+    let url = '/api/block/getBlockInfo';
+    const req = await request(url, data);
+    const res = req.json() as IResBlockInfo;
+    if (res.code !== 0) {
+        throw new Error(res.msg);
+    }
+    return res;
 }
 
 // **************************************** Attributes ****************************************

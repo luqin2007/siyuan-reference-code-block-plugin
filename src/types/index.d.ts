@@ -7,6 +7,9 @@
  * @Description  : Frequently used data structures in SiYuan
  */
 
+import { error } from "console";
+import { Plugin } from "siyuan";
+
 
 type DocumentId = string;
 type BlockId = string;
@@ -31,7 +34,7 @@ type NotebookConf = {
     dailyNoteTemplatePath: string;
 }
 
-type BlockType = 
+type BlockType =
     | 'd'
     | 'p'
     | 'query_embed'
@@ -103,4 +106,20 @@ interface Window {
         emojis: any;
     };
     Lute: any;
+}
+
+interface ICodeReference {
+    file: ICodeReferencePath,
+    lines: ICodeReferenceRenge[],
+    lang: string,
+    title: string,
+}
+
+interface ICodeReferenceRenge {
+    start: number,
+    end: number,
+}
+
+interface ICodeReferencePath {
+    path: string,
 }

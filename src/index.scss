@@ -1,0 +1,38 @@
+.protyle-action__title__lq {
+    opacity: .86;
+    user-select: none
+}
+
+.protyle-wysiwyg[data-readonly=false] span[data-type~=inline-math],.protyle-wysiwyg[data-readonly=false] .protyle-action__title__lq {
+    cursor: pointer
+}
+
+.protyle-wysiwyg[data-readonly=false] .code-block .protyle-action .protyle-action__title__lq:hover {
+    color: var(--b3-theme-on-background)
+}
+
+.protyle-wysiwyg[data-readonly=false] .code-block .protyle-action .protyle-action__title__lq:empty::after {
+    content: "title";
+    opacity: .68
+}
+
+.b3-typography .code-block:not(pre) .protyle-action .protyle-action__title__lq,
+.protyle-wysiwyg .code-block:not(pre) .protyle-action .protyle-action__title__lq {
+    font-size: 85%;
+    color: var(--b3-theme-on-surface);
+    margin-top: -4px;
+    align-self: center
+}
+
+.b3-typography .code-block:not(pre) .protyle-action .protyle-action__title__lq,
+.protyle-wysiwyg .code-block:not(pre) .protyle-action .protyle-action__title__lq {
+    margin-left: 1em;
+    opacity: 0;
+    transition: var(--b3-transition)
+}
+
+.b3-typography .code-block:not(pre):hover .protyle-icon,.b3-typography .code-block:not(pre):hover .protyle-action__title__lq,
+.protyle-wysiwyg .code-block:not(pre):hover .protyle-icon,.protyle-wysiwyg .code-block:not(pre):hover .protyle-action__title__lq {
+    opacity: .86
+}
+
