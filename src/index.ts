@@ -73,6 +73,7 @@ export default class PluginSample extends Plugin {
 
         typeElement.innerHTML = reference.lang;
         titleElement.innerHTML = reference.title || titleElement.innerHTML;
+        titleElement.title = reference.file.path;
         titleElement.addEventListener('click', () => {
             const isHttp = reference.file.path.startsWith("http");
             const path = isHttp ? reference.file.path : `${window.siyuan.config.system.workspaceDir}/data/${reference.file.path}`;
