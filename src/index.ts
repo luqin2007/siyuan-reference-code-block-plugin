@@ -1,7 +1,9 @@
 import {
     Plugin,
     Lute,
-    IProtyle
+    IProtyle,
+    getFrontend,
+    showMessage
 } from "siyuan";
 import { getBlockKramdown, getFile } from "./api";
 import "@/index.scss";
@@ -57,6 +59,23 @@ export default class PluginSample extends Plugin {
         titleElement.innerHTML = reference.title || titleElement.innerHTML;
         titleElement.classList.add("protyle-action--first");
         titleElement.classList.add("protyle-action__title__lq");
+        titleElement.addEventListener('click', () => {
+            const isHttp = reference.file.path.startsWith("http");
+            const path = isHttp ? reference.file.path : `${window.siyuan.config.system.workspaceDir}/data/${reference.file.path}`;
+            console.log(path, getFrontend());
+            switch (getFrontend()) {
+                case 'desktop':
+                case 'desktop-window': {
+                    const cp = require('child_process');
+                    cp.exec(`start ${path}`);
+                    break;
+                }
+                default: {
+                    window.navigator.clipboard.writeText(path);
+                    showMessage(`已复制 ${path}`);
+                }
+            }
+        });
         const copyElement = titleElement.nextElementSibling;
         const editElement = document.createElement('span');
         const viewElement = document.createElement('span');
