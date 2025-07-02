@@ -2,7 +2,7 @@
   "name": "siyuan-reference-code-block-plugin",
   "author": "luqin2007",
   "url": "https://github.com/luqin2007/siyuan-reference-code-block-plugin",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "minAppVersion": "3.0.12",
   "backends": [
     "windows",

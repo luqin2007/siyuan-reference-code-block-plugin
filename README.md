@@ -18,3 +18,11 @@ The referenced code blocks are read-only, and you can switch between edit and pr
 ![test-embed-code-file](/test-embed-code-file.png)
 
 ![test-code-styler](/test-code-styler.png)
+
+# Update
+
+## 20250703 v1.0.2
+
+- Display path when mouse hovering over title
+- Copy (browser, mobile, etc.) or open (desktop) code files when clicking titles
+- Display error message when loading fails

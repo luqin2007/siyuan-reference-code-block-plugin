@@ -18,3 +18,11 @@
 ![test-embed-code-file](/test-embed-code-file.png)
 
 ![test-code-styler](/test-code-styler.png)
+
+# 更新记录
+
+## 20250703 v1.0.2
+
+- 鼠标悬停标题时显示路径
+- 鼠标点击标题时复制（浏览器、手机等端）或打开（桌面端）代码文件
+- 加载失败时显示错误信息
