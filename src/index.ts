@@ -44,21 +44,35 @@ export default class PluginSample extends Plugin {
 
     async renderCodeReferenceBlock(codeBlock: HTMLElement, lute: Lute) {
         const typeElement = codeBlock.querySelector('.protyle-action__language') as HTMLElement;
+        const titleElement = typeElement.nextElementSibling as HTMLElement;
+        titleElement.classList.add("protyle-action--first");
+        titleElement.classList.add("protyle-action__title__lq");
+
         const type = typeElement.innerHTML.trim();
         const id = codeBlock.dataset.nodeId;
         const content = await this.getCodeReferenceContent(id);
         const reference = this.parseCodeReference(content, type);
-        const mdBlock = await this.createCodeReferenceMd(lute, reference);
-        const newCode = await this.createCodeReference(mdBlock, reference);
+
+        titleElement.innerHTML = '加载中...';
+        let newCode: Element;
+        try {
+            const mdBlock = await this.createCodeReferenceMd(lute, reference);
+            newCode = await this.createCodeReference(mdBlock, reference);
+        } catch (e) {
+            titleElement.innerHTML = `加载失败: ${e.message}`;
+            titleElement.style.color = 'red';
+            const errorBlock = codeBlock.querySelector('.hljs > div');
+            errorBlock.classList = '';
+            errorBlock.innerHTML = `<span style="color: var(--b3-theme-error);">Error: ${e.message}</span>`;
+            return;
+        }
+
         const originCode = codeBlock.querySelector('.hljs');
         codeBlock.replaceChild(newCode, originCode);
         codeBlock.querySelector('.protyle-action__language').innerHTML = reference.lang;
 
         typeElement.innerHTML = reference.lang;
-        const titleElement = typeElement.nextElementSibling as HTMLElement;
         titleElement.innerHTML = reference.title || titleElement.innerHTML;
-        titleElement.classList.add("protyle-action--first");
-        titleElement.classList.add("protyle-action__title__lq");
         titleElement.addEventListener('click', () => {
             const isHttp = reference.file.path.startsWith("http");
             const path = isHttp ? reference.file.path : `${window.siyuan.config.system.workspaceDir}/data/${reference.file.path}`;
@@ -134,37 +148,32 @@ export default class PluginSample extends Plugin {
     }
 
     async createCodeReferenceMd(lute: Lute, reference: ICodeReference) {
-        try {
-            let fullCode = '';
-            if (reference.file.path.startsWith("http")) {
-                // 网站
-                const res = await fetch(reference.file.path);
-                if (!res.ok)
-                    throw new Error(`HTTP error! status: ${res.status}`);
-                fullCode = await res.text();
-            } else {
-                fullCode = await getFile(`/data/${reference.file.path}`);
-            }
-
-            // 处理片段
-            const codes = []
-            const codeLines = fullCode.split('\n');
-            reference.lines.forEach(line => {
-                if (line.end === -1) {
-                    codes.push(codeLines.slice(line.start - 1).join('\n'));
-                } else {
-                    codes.push(codeLines.slice(line.start - 1, Math.min(line.end, codeLines.length)).join('\n'));
-                }
-            });
-
-            // 转换为 Markdown 渲染
-            const code = codes.join('\n...\n');
-            const markdown = '```' + `${reference.lang}\n${code}` + '\n```';
-            return lute.Md2BlockDOM(markdown);
-        } catch (err) {
-            console.error("Reference render error:", err);
-            return `<span style="color: var(--b3-theme-error);">Error: ${err.message}</span>`;
+        let fullCode = '';
+        if (reference.file.path.startsWith("http")) {
+            // 网站
+            const res = await fetch(reference.file.path);
+            if (!res.ok)
+                throw new Error(`HTTP error! status: ${res.status}`);
+            fullCode = await res.text();
+        } else {
+            fullCode = await getFile(`/data/${reference.file.path}`);
         }
+
+        // 处理片段
+        const codes = []
+        const codeLines = fullCode.split('\n');
+        reference.lines.forEach(line => {
+            if (line.end === -1) {
+                codes.push(codeLines.slice(line.start - 1).join('\n'));
+            } else {
+                codes.push(codeLines.slice(line.start - 1, Math.min(line.end, codeLines.length)).join('\n'));
+            }
+        });
+
+        // 转换为 Markdown 渲染
+        const code = codes.join('\n...\n');
+        const markdown = '```' + `${reference.lang}\n${code}` + '\n```';
+        return lute.Md2BlockDOM(markdown);
     }
 
     async getCodeReferenceContent(id: string) {
